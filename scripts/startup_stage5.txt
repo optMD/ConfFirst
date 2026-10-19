@@ -1,0 +1,9 @@
+ls /home
+mkdir /home/new
+ls /home
+cd /home/new
+ls
+cd ..
+ls
+mkdir /home/new
+mkdir /nope/x

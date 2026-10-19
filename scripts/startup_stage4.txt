@@ -1,0 +1,12 @@
+ls
+ls /home
+cd /home
+ls
+head readme.txt
+head -n 2 notes.txt
+head -n 1 /home/notes.txt
+cd ..
+ls /etc
+uname
+history
+cd /nope

@@ -1,0 +1,8 @@
+ls
+ls -l /home
+cd /home
+ls
+vfs-init
+ls
+unknowncmd
+exit

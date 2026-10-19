@@ -1,0 +1,5 @@
+ls
+ls -l /home
+cd /home
+unknowncmd
+exit
