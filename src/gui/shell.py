@@ -12,6 +12,8 @@ STATUS_OK = 0
 STATUS_ERROR = 1
 HISTORY_MAX = 128
 DEFAULT_HEAD_LINES = 10
+HEAD_OPTION_ARGS = 3
+HEAD_FILE_INDEX = 2
 
 
 @dataclass
@@ -153,12 +155,12 @@ def _head_args(args: list[str]) -> "tuple[int, int]":
     count = DEFAULT_HEAD_LINES
     file_index = 0
     if args and args[0] == "-n":
-        if len(args) < 3:
+        if len(args) < HEAD_OPTION_ARGS:
             raise ValueError("head: option -n needs a number")
         count = _atol(args[1])
         if count < 0:
             raise ValueError("head: invalid line count")
-        file_index = 2
+        file_index = HEAD_FILE_INDEX
     if len(args) - file_index != 1:
         raise ValueError("head: need exactly one file")
     return count, file_index

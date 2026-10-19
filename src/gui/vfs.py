@@ -8,6 +8,10 @@ import base64
 import binascii
 from dataclasses import dataclass, field
 
+CSV_FIELDS_MIN = 3
+CSV_CONTENT_INDEX = 3
+HEADER_ROW = 1
+
 
 class VfsError(Exception):
     """Ошибка загрузки или изменения VFS."""
@@ -68,8 +72,8 @@ class VFS:
 
         vfs = cls()
         entries = []
-        for row, line in enumerate(raw_lines, start=1):
-            if row == 1 or line == "":
+        for row, line in enumerate(raw_lines, start=HEADER_ROW):
+            if row == HEADER_ROW or line == "":
                 continue
             entries.append((row, _parse_line(row, line)))
 
@@ -134,10 +138,10 @@ class VFS:
 def _parse_line(row: int, line: str):
     """Разобрать строку CSV в (is_dir, path, owner, content)."""
     fields = line.split(",")
-    if len(fields) < 3:
+    if len(fields) < CSV_FIELDS_MIN:
         raise VfsError(f"vfs: invalid format on line {row}")
     kind, node_path, owner = fields[0], fields[1], fields[2]
-    data = fields[3] if len(fields) >= 4 else ""
+    data = fields[CSV_CONTENT_INDEX] if len(fields) > CSV_CONTENT_INDEX else ""
     if kind == "d":
         return (True, node_path, owner, b"")
     if kind == "f":
