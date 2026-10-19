@@ -1,0 +1,13 @@
+type,path,owner,content
+d,/,root,
+d,/home,root,
+d,/home/user,root,
+d,/home/user/docs,root,
+f,/home/user/docs/manual.txt,user,T3BlcmF0b3IgTWFudWFsCg==
+f,/home/user/docs/todo.txt,user,dGFzayBvbmUKdGFzayB0d28K
+f,/home/user/profile,user,bmFtZT11c2VyCg==
+d,/var,root,
+d,/var/log,root,
+d,/var/log/app,root,
+f,/var/log/app/out.log,root,bG9nIGxpbmUgMQpsb2cgbGluZSAyCg==
+f,/hello.txt,root,aGVsbG8gd29ybGQK

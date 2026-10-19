@@ -1,0 +1,7 @@
+type,path,owner,content
+d,/,root,
+d,/home,root,
+f,/home/readme.txt,root,V2VsY29tZSB0byBWRlMK
+f,/home/notes.txt,user,bGluZTEKbGluZTIKbGluZTMK
+d,/etc,root,
+f,/etc/motd,root,U3lzdGVtIHJlYWR5Cg==
