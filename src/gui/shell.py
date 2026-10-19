@@ -117,19 +117,10 @@ class Shell:
         return self._reply(STATUS_OK, "Emulator")
 
     def _head(self, args: list[str]) -> Response:
-        count = DEFAULT_HEAD_LINES
-        file_index = 0
-        if args and args[0] == "-n":
-            if len(args) < 3:
-                return self._reply(
-                    STATUS_ERROR, "head: option -n needs a number")
-            count = _atol(args[1])
-            if count < 0:
-                return self._reply(STATUS_ERROR,
-                                   "head: invalid line count")
-            file_index = 2
-        if len(args) - file_index != 1:
-            return self._reply(STATUS_ERROR, "head: need exactly one file")
+        try:
+            count, file_index = _head_args(args)
+        except ValueError as error:
+            return self._reply(STATUS_ERROR, str(error))
         node = self._resolve(args[file_index])
         if node is None:
             return self._reply(STATUS_ERROR, "head: no such file")
@@ -155,6 +146,22 @@ class Shell:
         except VfsError as error:
             return self._reply(STATUS_ERROR, str(error))
         return self._reply(STATUS_OK)
+
+
+def _head_args(args: list[str]) -> "tuple[int, int]":
+    """Разобрать аргументы head в (число строк, индекс файла)."""
+    count = DEFAULT_HEAD_LINES
+    file_index = 0
+    if args and args[0] == "-n":
+        if len(args) < 3:
+            raise ValueError("head: option -n needs a number")
+        count = _atol(args[1])
+        if count < 0:
+            raise ValueError("head: invalid line count")
+        file_index = 2
+    if len(args) - file_index != 1:
+        raise ValueError("head: need exactly one file")
+    return count, file_index
 
 
 def _atol(text: str) -> int:
