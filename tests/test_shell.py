@@ -1,4 +1,4 @@
-"""Тесты оболочки и загрузки VFS (чистый Python, без C-бэкенда)."""
+"""Тесты оболочки и загрузки VFS."""
 import os
 import shutil
 import sys

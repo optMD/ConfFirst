@@ -81,7 +81,7 @@ python3 -m unittest discover -s tests -v
 ```
 
 `tests/test_parser.py` проверяет разбор ввода на команду и аргументы,
-`tests/test_backend.py` — команды оболочки, загрузку VFS из CSV и `vfs-init`.
+`tests/test_shell.py` — команды оболочки, загрузку VFS из CSV и `vfs-init`.
 
 ## Структура репозитория
 

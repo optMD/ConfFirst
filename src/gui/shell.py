@@ -1,7 +1,7 @@
-"""Командная оболочка над VFS: те же команды, что были в C-бэкенде.
+"""Командная оболочка над VFS.
 
-Класс Shell заменяет пару «C-процесс + pipe-протокол»: он хранит
-текущую папку, историю и VFS и возвращает готовый Response.
+Класс Shell хранит текущую папку, историю и VFS
+и возвращает готовый Response.
 """
 from dataclasses import dataclass
 
@@ -71,9 +71,6 @@ class Shell:
             return self._reply(STATUS_ERROR,
                                f"{parsed.name}: command not found")
         return handler(parsed.args)
-
-    def close(self) -> None:
-        """Совместимость с прежним клиентом бэкенда; ресурсов нет."""
 
     def _reply(self, status: int, body: str = "") -> Response:
         return Response(status, self._cwd.path(), body)

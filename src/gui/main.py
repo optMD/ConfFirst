@@ -31,10 +31,7 @@ def main() -> None:
     print(f"[debug] script path: {args.script or '(not set)'}")
     client = Shell(args.vfs)
     app = Terminal(vfs_name(args.vfs), client, args.script)
-    try:
-        app.mainloop()
-    finally:
-        client.close()
+    app.mainloop()
 
 
 if __name__ == "__main__":
