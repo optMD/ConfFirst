@@ -2,7 +2,7 @@
 
 Каждая папка и файл — объект Node со ссылкой на родителя и словарём
 детей. Путь узла вычисляется подъёмом к корню, а поиск по пути —
-спуском от корня. Это заменяет прежний плоский массив узлов на C.
+спуском от корня.
 """
 import base64
 import binascii
@@ -54,7 +54,12 @@ class VFS:
 
     @classmethod
     def load(cls, path: str) -> "VFS":
-        """Загрузить VFS из CSV (тип,путь,владелец,содержимое-base64)."""
+        """Загрузить VFS из CSV (тип,путь,владелец,содержимое-base64).
+
+        Первая строка считается заголовком, пустые строки пропускаются.
+        Записи упорядочиваются по глубине пути, чтобы родительские папки
+        создавались раньше дочерних.
+        """
         try:
             with open(path, encoding="utf-8") as handle:
                 raw_lines = handle.read().splitlines()
@@ -65,13 +70,12 @@ class VFS:
         entries = []
         for row, line in enumerate(raw_lines, start=1):
             if row == 1 or line == "":
-                continue  # заголовок и пустые строки пропускаем
+                continue
             entries.append((row, _parse_line(row, line)))
 
         if not entries:
             raise VfsError(f"vfs: no entries in {path}")
 
-        # Сортируем по глубине пути: родители создаются раньше детей.
         entries.sort(key=lambda item: item[1][1].count("/"))
         for _row, (is_dir, node_path, owner, content) in entries:
             vfs._place(node_path, is_dir, owner, content)
@@ -79,9 +83,12 @@ class VFS:
 
     def _place(self, node_path: str, is_dir: bool, owner: str,
                content: bytes) -> None:
-        """Поместить узел по абсолютному пути, создавая папки по дороге."""
+        """Поместить узел по абсолютному пути, создавая папки по дороге.
+
+        Пустой путь означает корень: обновляется его владелец.
+        """
         parts = [p for p in node_path.split("/") if p]
-        if not parts:  # корень "/"
+        if not parts:
             self.root.owner = owner
             return
         node = self.root
